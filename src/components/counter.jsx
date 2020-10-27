@@ -1,33 +1,36 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-    //add the state property and set it to an object.
-    //state is a special property in react components,  its an object that includes data that the component needs.
     state = {
-        count: 0
+        count: 0,
+        //    random 200 X 200 pic:
+        //     imageURL: 'https://picsum.photos/200'
     };
+    //  -- can apply styles this way:
+    //  styles = {
+    //      fontSize: 15,
+    //      fontWeight: "bold"
+    //  }  ;
+
     render() {
         return (
-            // <div>  --instead of another div (because the root div is a div already, use fragment
             <React.Fragment>
-                {/*--instead of hardcoding below, use the state method to add values dynamically*/}
-              {/*<h1>Hello Bobbie</h1>*/}
-              {/*-- change the above to span once the state property is implemented.*/}
-              {/*  <span>{this.state.count}</span>*/}
-                {/*--in between the curly braces, we can write any valid javascript expression.  even call a function.*/}
-                <span>{this.formatCount()}</span>
-                <button>Increment</button>
+{/*-----we want the image src to be dynamic.  we can hard code the source, or: */}
+                {/*<img src={this.state.imageURL} alt=""/>*/}
+
+{/*------ we add classes buy using the attribute className=""  */}
+                <span className=" badge badge-primary m-2 ">{this.formatCount()}</span>
+{/*-----------STYLING-----------*/}
+            {/*<span style={this.styles} className=" badge badge-primary m-2 ">{this.formatCount()}</span>*/}
+{/*------- inline styles no need for style property above and use double curly braces:   */}
+            {/*    <span style={{fontSize: 30}} className=" badge badge-primary m-2 ">{this.formatCount()}</span>*/}
+                <button className="btn btn-secondary btn-sm">Increment</button>
             </React.Fragment>
-            // </div>
         );
     }
     formatCount() {
-        // return this.state.count === 0 ? 'Zero' : this.state.count;
-    //   -- when ever there is repetitive code like this.state.count - use object destructuring instead:
         const {count} = this.state;
         return count === 0 ? "Zero" : count;
-        //--further more, we can return a jsx expression instead of plain text.
-        // return count === 0 ? <h1> Zero </h1> : count;
     }
 }
 export default Counter;
