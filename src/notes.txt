@@ -1,0 +1,262 @@
+import React, { Component } from "react";
+
+class Counter extends Component {
+    //add the state property and set it to an object.
+    //state is a special property in react components,  its an object that includes data that the component needs.
+    state = {
+        count: 0
+    };
+    render() {
+        return (
+            // <div>  --instead of another div (because the root div is a div already, use fragment
+            <React.Fragment>
+                {/*--instead of hardcoding below, use the state method to add values dynamically*/}
+              {/*<h1>Hello Bobbie</h1>*/}
+              {/*-- change the above to span once the state property is implemented.*/}
+              {/*  <span>{this.state.count}</span>*/}
+                {/*--in between the curly braces, we can write any valid javascript expression.  even call a function.*/}
+                <span>{this.formatCount()}</span>
+                <button>Increment</button>
+            </React.Fragment>
+            // </div>
+        );
+    }
+    formatCount() {
+        // return this.state.count === 0 ? 'Zero' : this.state.count;
+    //   -- when ever there is repetitive code like this.state.count - use object destructuring instead:
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+        //--further more, we can return a jsx expression instead of plain text.
+        // return count === 0 ? <h1> Zero </h1> : count;
+    }
+}
+export default Counter;
+
+
+
+
+
+SETTING ATTRIBUTES:
+
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0,
+        //    random 200 X 200 pic:
+        //     imageURL: 'https://picsum.photos/200'
+    };
+    //  -- can apply styles this way:
+    //  styles = {
+    //      fontSize: 15,
+    //      fontWeight: "bold"
+    //  }  ;
+
+    render() {
+        return (
+            <React.Fragment>
+{/*-----we want the image src to be dynamic.  we can hard code the source, or: */}
+                {/*<img src={this.state.imageURL} alt=""/>*/}
+
+{/*------ we add classes buy using the attribute className=""  */}
+                <span className=" badge badge-primary m-2 ">{this.formatCount()}</span>
+
+{/*-----------STYLING-----------*/}
+            {/*<span style={this.styles} className=" badge badge-primary m-2 ">{this.formatCount()}</span>*/}
+
+{/*------- inline styles no need for style property above and use double curly braces:   */}
+            {/*    <span style={{fontSize: 30}} className=" badge badge-primary m-2 ">{this.formatCount()}</span>*/}
+                <button className="btn btn-secondary btn-sm">Increment</button>
+            </React.Fragment>
+        );
+    }
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+RENDERING CLASSES DYNAMICALLY
+
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0
+    };
+
+    render() {
+        //rather than polluting the render method with below.  turn it into a method.  right click, refactor, extract method, choose location and rename:
+        // let classes = "badge m-2";
+        // //if count = 0, use the yellow badge.  else the blue:
+        // classes += (this.state.count === 0) ? "badge-warning" : "badge-primary"
+        return (
+            <React.Fragment>
+                {/*replace the hard coded classname with classes: */}
+                {/*<span className=" badge badge-primary m-2 ">{this.formatCount()}</span>*/}
+                {/*<span className=" classes ">{this.formatCount()}</span>*/}
+                {/*--after extraction of the method, we can now call the method :*/}
+                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button className="btn btn-secondary btn-sm">Increment</button>
+            </React.Fragment>
+        );
+    }
+    //the extracted method below:
+    getBadgeClasses() {
+        let classes = "badge m-2";
+        //if count = 0, use the yellow badge.  else the blue:
+        classes += this.state.count === 0 ? "badge-warning" : "badge-primary"
+        //needed to add a return here, unsure why it didn't do it automatically.
+        return classes;
+    }
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+
+
+RENDERING LIST ITEMS DYNAMICALLY:
+
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0,
+        tags: ['tag1', 'tag2', 'tag3' ]
+    };
+
+    render() {
+        return (
+            <div>
+                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button className="btn btn-secondary btn-sm">Increment</button>
+                <ul>
+                    {/*--use the map method: */}
+                    {/*{this.state.tags.map(tag => <li>{ tag }</li>)}*/}
+
+                    {/*--you will have an error in the console because it needs a key to uniquely identify each item in the list. because if the state of an element in the virtual DOM changes (say, item 3), react need to quickly figure out what element has changed and where in the dom it need to make changes to keep the DOM in sync with the virtual DOM.  So when you use the map method for a list of items set the key in the real world you'll use the property id ex:  key.id:   */}
+                    {this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}
+                </ul>
+            </div>
+        );
+    }
+
+    getBadgeClasses() {
+        let classes = "badge m-2 badge-";
+        classes += this.state.count === 0 ? "warning" : "primary"
+        return classes;
+    }
+
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+CONDITIONAL RENDERING:
+
+First option:
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0,
+        tags: ['tag1', 'tag2', 'tag3' ]
+        // tags: []
+    };
+    //--Need to use javascript for conditional logic as JSX is not a templating engine.
+    //--create a helper method in JS:
+    renderTags(){
+        if (this.state.tags.length === 0) return <p> There are no tags!</p>;
+        return <ul>{this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}</ul>;
+    // --to test, un comment out the empty tag array.
+    }
+
+    render() {
+        return (
+            <div>
+                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button className="btn btn-secondary btn-sm">Increment</button>
+                {/*--paste this in to the method.*/}
+                {/*<ul>{this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}</ul>*/}
+
+            {/* --- now call the helper method: */}
+                { this.renderTags() }
+            </div>
+        );
+    }
+
+    getBadgeClasses() {
+        let classes = "badge m-2 badge-";
+        classes += this.state.count === 0 ? "warning" : "primary"
+        return classes;
+    }
+
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+Second option:
+
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0,
+        tags: ['tag1', 'tag2', 'tag3' ]
+        // tags: []
+    };
+    //--Need to use javascript for conditional logic as JSX is not a templating engine.
+    //--create a helper method in JS:
+    renderTags(){
+        if (this.state.tags.length === 0) return <p> There are no tags!</p>;
+        return <ul>{this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}</ul>;
+    // --to test, un comment out the empty tag array.
+    }
+
+    render() {
+        return (
+            <div>
+                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button className="btn btn-secondary btn-sm">Increment</button>
+{/*-----------------first option to conditionally rendering: --------------------*/}
+                {/*--paste this in to the method.*/}
+                {/*<ul>{this.state.tags.map(tag => <li key={tag}>{ tag }</li>)}</ul>*/}
+
+            {/* --- now call the helper method: */}
+            {/*    { this.renderTags() }*/}
+{/*-----------------second option to conditionally rendering: --------------------*/}
+            {/*--- if we want to send a given message based on a certain condition.  currently theres only a single if statement without an else.  In javascript you can use the conditional AND between non boolean values see note below.  write our condition within the curly braces: */}
+                { this.state.tags.length === 0 && 'Please create a new tag'}
+                    { this.renderTags() }
+
+            </div>
+        );
+    }
+
+    getBadgeClasses() {
+        let classes = "badge m-2 badge-";
+        classes += this.state.count === 0 ? "warning" : "primary"
+        return classes;
+    }
+
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+//NOTE:
+// in the console type: true && false - remember truthy and falsy rules? this will return false.
+// in the console type:  true && 'hi' - in truthy falsy rules only an empty string is false, so here are to true values.  it will return hi.  the jS engine looks at the first value and evaluates it to true, so it will move to the second.  the JS engine tries to convert the string to a truthy or falsy, and since its not an empty string it evaluates as true and thus so, will automatically return the second operand..
+//in the console type:  true && 'hi' && 1 - the first is true so the truthy falsy evaluation continues, the second is truthy, evaluation continues, the last is also truthy, this will return 1.
+
