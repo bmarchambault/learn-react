@@ -1,3 +1,14 @@
+TO START A REACT PROJECT:
+in the terminal:
+1. create-react-app app-name
+2. cd app-name
+3. npm start
+google prettier and type the command line info
+
+
+
+
+
 import React, { Component } from "react";
 
 class Counter extends Component {
