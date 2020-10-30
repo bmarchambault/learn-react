@@ -5,10 +5,8 @@ in the terminal:
 3. npm start
 google prettier and type the command line info
 
-
-
-
-
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
 import React, { Component } from "react";
 
 class Counter extends Component {
@@ -46,8 +44,9 @@ export default Counter;
 
 
 
-
-SETTING ATTRIBUTES:
+--------------------------------------------------------------------
+                SETTING ATTRIBUTES:
+-------------------------------------------------------------------
 
 import React, { Component } from "react";
 
@@ -129,8 +128,9 @@ class Counter extends Component {
 export default Counter;
 
 
-
-RENDERING LIST ITEMS DYNAMICALLY:
+--------------------------------------------------------------------
+                RENDERING LIST ITEMS DYNAMICALLY:
+----------------------------------------------------------------------
 
 import React, { Component } from "react";
 
@@ -169,9 +169,11 @@ class Counter extends Component {
 }
 export default Counter;
 
-CONDITIONAL RENDERING:
+------------------------------------------------------------------------------------
+                   CONDITIONAL RENDERING:
+-----------------------------------------------------------------------------------
 
-First option:
+        First option:
 import React, { Component } from "react";
 
 class Counter extends Component {
@@ -215,7 +217,8 @@ class Counter extends Component {
 }
 export default Counter;
 
-Second option:
+        Second option:
+-----------------------------------
 
 import React, { Component } from "react";
 
@@ -270,4 +273,60 @@ export default Counter;
 // in the console type: true && false - remember truthy and falsy rules? this will return false.
 // in the console type:  true && 'hi' - in truthy falsy rules only an empty string is false, so here are to true values.  it will return hi.  the jS engine looks at the first value and evaluates it to true, so it will move to the second.  the JS engine tries to convert the string to a truthy or falsy, and since its not an empty string it evaluates as true and thus so, will automatically return the second operand..
 //in the console type:  true && 'hi' && 1 - the first is true so the truthy falsy evaluation continues, the second is truthy, evaluation continues, the last is also truthy, this will return 1.
+
+
+----------------------------------------------------------------------------------------
+                    EVENT HANDLERS AND BINDING THE THIS KEYWORD:
+---------------------------------------------------------------------------------------
+import React, { Component } from "react";
+
+class Counter extends Component {
+    state = {
+        count: 0,
+    };
+
+//SEE NOTE BELOW:
+
+//create a constructor for binding the this keyword
+    constructor(){
+        super();  //this gives us access to the Counter object.
+       this.handleIncrement =  this.handleIncrement.bind(this);
+    }
+
+
+
+    handleIncrement(){
+        //this method needs to increment the value of the count property
+        // if a function is called as part of an object (obj.method) this will always return a reference to that objet.
+        // if a function is called as a stand-alone function (function () ), without an object reference, this by default will return a reference to the window object. However, if strict mode is enabled, it will be undefined.  so we need to bind this.
+        console.log('increment clicked', this)
+    }
+    render() {
+        return (
+            <div>
+                <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+                <button
+                    onClick={ this.handleIncrement}
+                    className="btn btn-secondary btn-sm">Increment</button>
+
+            </div>
+        );
+    }
+
+    getBadgeClasses() {
+        let classes = "badge m-2 badge-";
+        classes += this.state.count === 0 ? "warning" : "primary"
+        return classes;
+    }
+
+    formatCount() {
+        const {count} = this.state;
+        return count === 0 ? "Zero" : count;
+    }
+}
+export default Counter;
+
+//NOTE:
+//this is a bit noisy.  in every component that has an event handler, we have to make a constructor, call the super and then reset the function the the bind method:
+//this.function = this.function.bind(this)
 
