@@ -284,7 +284,19 @@ class Counter extends Component {
     state = {
         count: 0,
     };
+------------------------------
+second/newer option to event handler:
 
+    //a newer way to handle event handlers?  no constructor but instead convert the function to a fat arrow function.
+
+    handleIncrement = () => {
+        console.log('increment clicked', this)
+    }
+------------------------------------
+
++++++++++++++++++++++++++++++++++++
+old school way:
++++++++++++++++++++++++++++++++++++
 //SEE NOTE BELOW:
 
 //create a constructor for binding the this keyword
