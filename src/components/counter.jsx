@@ -5,20 +5,10 @@ class Counter extends Component {
         count: 0,
     };
 
-//SEE NOTE BELOW:
-
-//create a constructor for binding the this keyword
-    constructor(){
-        super();  //this gives us access to the Counter object.
-       this.handleIncrement =  this.handleIncrement.bind(this);
-    }
-
-
-
-    handleIncrement(){
-        //this method needs to increment the value of the count property
-        // if a function is called as part of an object (obj.method) this will always return a reference to that objet.
-        // if a function is called as a stand-alone function (function () ), without an object reference, this by default will return a reference to the window object. However, if strict mode is enabled, it will be undefined.  so we need to bind this.
+    handleIncrement = () => {
+        //in react we cannot modify the state directly (this.state.count++).  instead use a react setter:
+        //pass an object to the setter using curly braces. the properties of the object will be merged or overridden if any exits.
+        this.setState({count: this.state.count + 1})
         console.log('increment clicked', this)
     }
     render() {
