@@ -5,18 +5,28 @@ class Counter extends Component {
         count: 0,
     };
 
-    handleIncrement = () => {
-        //in react we cannot modify the state directly (this.state.count++).  instead use a react setter:
-        //pass an object to the setter using curly braces. the properties of the object will be merged or overridden if any exits.
+
+    //sometimes we have to pass arguments with our event.  like dealing with a list of items in a shopping cart.  to do this, we pass a function reference.
+
+    handleIncrement = (product) => { //(can't pass an argument until doHandleIncrement has been defined)
+
+
         this.setState({count: this.state.count + 1})
-        console.log('increment clicked', this)
+    };
+    //----------first option to pass a function reference. ------------
+//--temp define another method - messy and redundant.:
+    doHandleIncrement = () => {
+        this.handleIncrement({ id: 1})
     }
+// once this method is defined, you can pass an argument in the preview method above.
+// after you pass the argument, you can now change the onClick below.
+
     render() {
         return (
             <div>
                 <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
                 <button
-                    onClick={ this.handleIncrement}
+                    onClick={ this.doHandleIncrement}
                     className="btn btn-secondary btn-sm">Increment</button>
 
             </div>
