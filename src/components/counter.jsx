@@ -8,25 +8,24 @@ class Counter extends Component {
 
     //sometimes we have to pass arguments with our event.  like dealing with a list of items in a shopping cart.  to do this, we pass a function reference.
 
-    handleIncrement = (product) => { //(can't pass an argument until doHandleIncrement has been defined)
-
-
-        this.setState({count: this.state.count + 1})
+    handleIncrement = product => {
+        console.log(product);
+        this.setState({count: this.state.count + 1});
     };
-    //----------first option to pass a function reference. ------------
-//--temp define another method - messy and redundant.:
-    doHandleIncrement = () => {
-        this.handleIncrement({ id: 1})
-    }
-// once this method is defined, you can pass an argument in the preview method above.
-// after you pass the argument, you can now change the onClick below.
+    //----------SECOND option to pass a function reference. ------------
+//--use an inline method - take the arrow function and pass it into the the onClick inside curly braces:
+//     doHandleIncrement = () => {
+//         this.handleIncrement({ id: 1})
+//     }
 
     render() {
         return (
             <div>
                 <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
                 <button
-                    onClick={ this.doHandleIncrement}
+                    // onClick={ this.doHandleIncrement}
+                    onClick = { () =>  this.handleIncrement({id: 1}) }
+                    //instead of hardcoding the id, you'd use the map method and then pass in the singular version of the array.  ie. products, product.
                     className="btn btn-secondary btn-sm">Increment</button>
 
             </div>
@@ -45,7 +44,3 @@ class Counter extends Component {
     }
 }
 export default Counter;
-
-//NOTE:
-//this is a bit noisy.  in every component that has an event handler, we have to make a constructor, call the super and then reset the function the the bind method:
-//this.function = this.function.bind(this)
